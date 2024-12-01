@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>冊子印刷ページ設定算出器</title>
+</head>
+
+<body>
+    <h1>冊子印刷ページ設定算出器</h1>
+    <form id="入力フォーム" action="" method="post">
+        <label for="入力部">ページ数: </label>
+        <input type="number" name="入力部" id="入力部" autofocus />
+        <input type="submit" value="算出">
+    </form>
+    <p id="表出力部"></p>
+    <p id="裏出力部"></p>
+    <script>
+        let 表 = "", 裏 = "";
+        document.getElementById('入力フォーム').onsubmit = function (event) {
+            event.preventDefault();
+            表 = "";
+            裏 = "";
+            document.getElementById("表出力部").innerText = "";
+            document.getElementById("裏出力部").innerText = "";
+            const 入力 = document.getElementById("入力部").value;
+            let 紙の枚数 = Math.ceil(入力 / 4);
+            let ページ数 = 紙の枚数 * 4;
+            let 計算メモ = 0;
+            for (let n = 1; n < 紙の枚数 + 1; n++) {
+                計算メモ = ページ数 - 2 * n + 2;
+                表 += 計算メモ.toString();
+                表 += ", "
+                計算メモ = 2 * n - 1;
+                表 += 計算メモ.toString();
+                表 += ", "
+                計算メモ = 2 * n;
+                裏 += 計算メモ.toString();
+                裏 += ", "
+                計算メモ = ページ数 - 2 * n + 1;
+                裏 += 計算メモ.toString();
+                裏 += ", "
+            }
+            表 = 表.substring(0, 表.length - 2);
+            裏 = 裏.substring(0, 裏.length - 2);
+            document.getElementById("表出力部").innerHTML = "表: " + 表 + " <input type='button' onclick='コピー(表)' value='コピー'>";
+            document.getElementById("裏出力部").innerHTML = "裏: " + 裏 + " <input type='button' onclick='コピー(裏)' value='コピー'>";
+        }
+        function コピー(コピー内容) {
+            navigator.clipboard.writeText(コピー内容);
+        }
+    </script>
+</body>
+
+</html>
